@@ -198,6 +198,10 @@ do
   else
     result=$(jq -r $request $properties_json)
   fi
+
+  if [[ $request == ".pump.pump.extended.TempBasalAbsoluteRate" ]]; then
+    result=$(LC_NUMERIC="en_US.UTF-8" printf "%.*f\n" "2" "${result}")
+  fi
   echo $result
 done
 
