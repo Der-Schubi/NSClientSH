@@ -92,10 +92,6 @@ while [ : ]; do
       arr_requests+=('.cob.display')
       shift
       ;;
-    -p | --tbr-percent)
-      arr_requests+=('.pump.pump.extended.TempBasalPercent')
-      shift
-      ;;
     -r | --tbr-remaining)
       arr_requests+=('.pump.pump.extended.TempBasalRemaining')
       shift
@@ -111,6 +107,10 @@ while [ : ]; do
 
     -f | --reservoir-percent)
       arr_requests+=('!reservoir-percent')
+      shift
+      ;;
+    -p | --tbr-percent)
+      arr_requests+=('!tbr-percent')
       shift
       ;;
 
@@ -195,6 +195,10 @@ do
   elif [[ $request == "!reservoir-percent" ]]; then
     resU=$(jq -r '.pump.pump.reservoir' $properties_json)
     result=$(awk -vn=$resU 'BEGIN{printf("%.0f\n",n/1000*315)}')
+  elif [[ $request == "!tbr-percent" ]]; then
+    abs=$(jq -r '.pump.pump.extended.TempBasalAbsoluteRate' $properties_json)
+    base=$(jq -r '.pump.pump.extended.BaseBasalRate' $properties_json)
+    result=$(awk -vabs=1.8 -vbase=1.55 'BEGIN{printf("%.0f\n",100/base*abs)}')
   else
     result=$(jq -r $request $properties_json)
   fi
