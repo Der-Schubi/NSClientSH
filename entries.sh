@@ -23,7 +23,7 @@ secs2mins() {
 [ -f "$entries_json" ] && [ -s "$entries_json" ] && jq empty $entries_json &> /dev/null
 retVal=$?
 if [ $retVal -ne 0 ]; then
-  [ $opt_Verbose -eq 1 ] && echo "Error parsing properties.json"
+  [ $opt_Verbose -eq 1 ] && echo "Error parsing entries.json"
   opt_SkipUpdate=0
   opt_ForceUpdate=1
 fi
