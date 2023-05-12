@@ -5,6 +5,25 @@ help() {
   echo "NSClientSH is a tool to get values such as blood sugar from a NightScout instance."
 }
 
+unlock_instance()
+{
+  rm -f $pid_file
+}
+
+lock_instance()
+{
+  trap unlock_instance EXIT
+  echo $$ > $pid_file
+}
+
+wait_instance()
+{
+  while [ -f $pid_file ];
+  do
+    sleep 1;
+  done;
+}
+
 secs2mins() {
   ((h=${1}/3600))
   ((m=(${1}%3600)/60))
@@ -12,6 +31,8 @@ secs2mins() {
 }
 
 get_properties_json() {
+  #rm $properties_json
+  #rm $entries_json
   wget $ns_url/api/v2/properties.json?token=$token -qO $properties_json 2> /dev/null
 }
 
@@ -110,6 +131,9 @@ while [ : ]; do
 
 done
 
+wait_instance
+lock_instance
+
 # Check integrity of properties.json
 [ -f "$properties_json" ] && [ -s "$properties_json" ] && jq empty $properties_json &> /dev/null
 retVal=$?
@@ -174,6 +198,8 @@ do
   fi
   echo $result
 done
+
+unlock_instance
 
 exit 0
 
