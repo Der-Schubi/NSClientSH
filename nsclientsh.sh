@@ -184,6 +184,8 @@ if [ $updated -eq 1 ]; then
   age_mins=$(secs2mins $age)
 fi
 
+unlock_instance
+
 for request in "${arr_requests[@]}"
 do
   [ $opt_Verbose -eq 1 ] && echo "Fetching $request"
@@ -198,8 +200,6 @@ do
   fi
   echo $result
 done
-
-unlock_instance
 
 exit 0
 
