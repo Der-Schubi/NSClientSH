@@ -198,7 +198,11 @@ do
   elif [[ $request == "!tbr-percent" ]]; then
     abs=$(jq -r '.pump.pump.extended.TempBasalAbsoluteRate' $properties_json)
     base=$(jq -r '.pump.pump.extended.BaseBasalRate' $properties_json)
-    result=$(awk -vabs=1.8 -vbase=1.55 'BEGIN{printf("%.0f\n",100/base*abs)}')
+    if [[ $abs == "0" ]]; then
+      result="0"
+    else
+      result=$(awk -vabs=1.8 -vbase=1.55 'BEGIN{printf("%.0f\n",100/base*abs)}')
+    fi
   else
     result=$(jq -r $request $properties_json)
   fi
