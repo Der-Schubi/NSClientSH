@@ -59,13 +59,17 @@ function conky_main ()
       y1 = y_origin + height - 1 - BG_last
       y2 = y_origin + height - 1 - BG_this
 
+      if y2 >= y_70 then
+        cairo_set_source_rgb (cr, 1, 0, 0);
+      elseif y2 <= y_180 then
+        cairo_set_source_rgb (cr, 1, 1, 0);
+      else
+        cairo_set_source_rgb (cr, 1, 1, 1);
+      end
       cairo_move_to(cr, x1, y1)
       cairo_line_to(cr, x2, y2)
+      cairo_stroke(cr)
     end
-
-    cairo_set_line_width(cr, 1.5)
-    cairo_set_source_rgb (cr, 1, 1, 1);
-    cairo_stroke(cr)
 
     cairo_destroy (cr)
     cairo_surface_destroy (cs)
