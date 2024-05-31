@@ -25,7 +25,7 @@ function conky_main ()
 
     local glucoseValues = {}
 
-    local handle = io.popen('entries.sh')
+    local handle = io.popen('/etc/conky/entries.sh')
     local output = handle:read('*a')
     local result = output:gsub('[\n\r]', ' ')
     handle:close()

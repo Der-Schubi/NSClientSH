@@ -1,5 +1,5 @@
 #!/bin/bash
-. nsclientsh.conf
+. /etc/nsclientsh.conf
 
 # Init options
 opt_Verbose=0

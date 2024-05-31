@@ -1,5 +1,5 @@
 #!/bin/bash
-. nsclientsh.conf
+. /etc/nsclientsh.conf
 
 help() {
   echo "NSClientSH is a tool to get values such as blood sugar from a NightScout instance."
